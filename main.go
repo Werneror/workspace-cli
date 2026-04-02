@@ -9,7 +9,8 @@ import (
 	"github.com/chaitin/workspace-cli/config"
 	"github.com/chaitin/workspace-cli/products/chaitin"
 	"github.com/chaitin/workspace-cli/products/cloudwalker"
-	"github.com/chaitin/workspace-cli/products/safeline-ce"
+	"github.com/chaitin/workspace-cli/products/safeline"
+	safelinece "github.com/chaitin/workspace-cli/products/safeline-ce"
 	"github.com/chaitin/workspace-cli/products/tanswer"
 	"github.com/chaitin/workspace-cli/products/xray"
 	"github.com/spf13/cobra"
@@ -55,6 +56,10 @@ func newApp() (*app, error) {
 		return nil, err
 	}
 	a.registerProductCommand(xrayCmd)
+
+	safelineCmd := safeline.NewCommand()
+	safeline.RegisterModules(safelineCmd)
+	a.registerProductCommand(safelineCmd)
 
 	return a, nil
 }
