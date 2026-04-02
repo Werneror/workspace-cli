@@ -51,4 +51,6 @@ task build
 task run:chaitin
 task fmt
 task lint
+task test
+task package GOOS=linux GOARCH=amd64
 ```
