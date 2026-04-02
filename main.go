@@ -21,6 +21,8 @@ type app struct {
 	dryRun           bool
 }
 
+const defaultConfigPath = "config.yaml"
+
 func newApp() (*app, error) {
 	cfg, err := loadConfigFile(configPathFromCWD())
 	if err != nil {
@@ -121,6 +123,14 @@ func normalizeBinaryName(path string) string {
 		return ""
 	}
 	return base
+}
+
+func loadConfigFile(path string) (config.Raw, error) {
+	return config.Load(path)
+}
+
+func configPathFromCWD() string {
+	return filepath.Join(".", defaultConfigPath)
 }
 
 func main() {
