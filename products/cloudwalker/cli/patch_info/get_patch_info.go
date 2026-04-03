@@ -17,6 +17,7 @@ var GetPatchInfoCmd = &cobra.Command{
 	Short: "获取补丁详情",
 	Long:  `获取补丁详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "PatchInfoService.GetPatchInfo", getPatchInfoParams, &result)
@@ -30,6 +31,7 @@ var GetPatchInfoCmd = &cobra.Command{
 
 func init() {
 	GetPatchInfoCmd.Flags().StringVar(&getPatchInfoParams.Id, "id", "", "补丁 ID")
+	GetPatchInfoCmd.MarkFlagRequired("id")
 }
 
 // GetPatchInfoParams 请求参数

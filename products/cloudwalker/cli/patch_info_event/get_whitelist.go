@@ -17,6 +17,7 @@ var GetWhitelistCmd = &cobra.Command{
 	Short: "获取白名单规则",
 	Long:  `获取白名单规则`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "PatchInfoEventService.GetWhitelist", getWhitelistParams, &result)
@@ -30,6 +31,7 @@ var GetWhitelistCmd = &cobra.Command{
 
 func init() {
 	GetWhitelistCmd.Flags().Float64Var(&getWhitelistParams.EventId, "event-id", 0, "风险事件ID")
+	GetWhitelistCmd.MarkFlagRequired("event-id")
 }
 
 // GetWhitelistParams 请求参数

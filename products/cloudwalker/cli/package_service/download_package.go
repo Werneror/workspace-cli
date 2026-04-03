@@ -17,6 +17,7 @@ var DownloadPackageCmd = &cobra.Command{
 	Short: "下载升级包",
 	Long:  `下载升级包`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "PackageService.DownloadPackage", downloadPackageParams, &result)
@@ -30,6 +31,7 @@ var DownloadPackageCmd = &cobra.Command{
 
 func init() {
 	DownloadPackageCmd.Flags().StringVar(&downloadPackageParams.Id, "id", "", "升级包id")
+	DownloadPackageCmd.MarkFlagRequired("id")
 }
 
 // DownloadPackageParams 请求参数

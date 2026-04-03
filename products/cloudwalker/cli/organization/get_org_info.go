@@ -17,6 +17,7 @@ var GetOrgInfoCmd = &cobra.Command{
 	Short: "获取机构信息",
 	Long:  `获取机构信息`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "OrganizationService.GetOrgInfo", getOrgInfoParams, &result)
@@ -30,6 +31,7 @@ var GetOrgInfoCmd = &cobra.Command{
 
 func init() {
 	GetOrgInfoCmd.Flags().IntVar(&getOrgInfoParams.Id, "id", 0, "机构 ID")
+	GetOrgInfoCmd.MarkFlagRequired("id")
 }
 
 // GetOrgInfoParams 请求参数

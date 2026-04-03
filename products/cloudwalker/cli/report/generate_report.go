@@ -17,6 +17,7 @@ var GenerateReportCmd = &cobra.Command{
 	Short: "生成报告",
 	Long:  `生成报告`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "ReportService.GenerateReport", generateReportParams, &result)
@@ -30,6 +31,7 @@ var GenerateReportCmd = &cobra.Command{
 
 func init() {
 	GenerateReportCmd.Flags().IntVar(&generateReportParams.Id, "id", 0, "ID")
+	GenerateReportCmd.MarkFlagRequired("id")
 }
 
 // GenerateReportParams 请求参数

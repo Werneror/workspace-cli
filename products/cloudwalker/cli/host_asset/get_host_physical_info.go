@@ -17,6 +17,7 @@ var GetHostPhysicalInfoCmd = &cobra.Command{
 	Short: "获取主机资产物理信息",
 	Long:  `获取主机资产物理信息`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "HostAssetService.GetHostPhysicalInfo", getHostPhysicalInfoParams, &result)
@@ -30,6 +31,7 @@ var GetHostPhysicalInfoCmd = &cobra.Command{
 
 func init() {
 	GetHostPhysicalInfoCmd.Flags().IntVar(&getHostPhysicalInfoParams.Id, "id", 0, "ID")
+	GetHostPhysicalInfoCmd.MarkFlagRequired("id")
 }
 
 // GetHostPhysicalInfoParams 请求参数

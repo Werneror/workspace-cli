@@ -17,6 +17,7 @@ var DeleteSetCmd = &cobra.Command{
 	Short: "删除策略",
 	Long:  `删除策略`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "BaselineV2Service.DeleteSet", deleteSetParams, &result)
@@ -30,6 +31,7 @@ var DeleteSetCmd = &cobra.Command{
 
 func init() {
 	DeleteSetCmd.Flags().StringSliceVar(&deleteSetParams.Id, "id", nil, "策略 ID")
+	DeleteSetCmd.MarkFlagRequired("id")
 }
 
 // DeleteSetParams 请求参数

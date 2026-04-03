@@ -17,6 +17,7 @@ var GetEventDetailCmd = &cobra.Command{
 	Short: "事件详情",
 	Long:  `事件详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "PortScanService.GetEventDetail", getEventDetailParams, &result)
@@ -30,6 +31,7 @@ var GetEventDetailCmd = &cobra.Command{
 
 func init() {
 	GetEventDetailCmd.Flags().IntVar(&getEventDetailParams.EventId, "event-id", 0, "事件 ID")
+	GetEventDetailCmd.MarkFlagRequired("event-id")
 }
 
 // GetEventDetailParams 请求参数

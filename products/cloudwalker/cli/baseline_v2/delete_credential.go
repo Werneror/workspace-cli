@@ -17,6 +17,7 @@ var DeleteCredentialCmd = &cobra.Command{
 	Short: "删除凭证",
 	Long:  `删除凭证`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "BaselineV2Service.DeleteCredential", deleteCredentialParams, &result)
@@ -30,6 +31,7 @@ var DeleteCredentialCmd = &cobra.Command{
 
 func init() {
 	DeleteCredentialCmd.Flags().IntSliceVar(&deleteCredentialParams.Id, "id", nil, "凭据 ID")
+	DeleteCredentialCmd.MarkFlagRequired("id")
 }
 
 // DeleteCredentialParams 请求参数

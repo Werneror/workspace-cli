@@ -17,6 +17,7 @@ var GetBusinessGroupDetailCmd = &cobra.Command{
 	Short: "获取业务组详情",
 	Long:  `获取业务组详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "BusinessGroupService.GetBusinessGroupDetail", getBusinessGroupDetailParams, &result)
@@ -30,6 +31,7 @@ var GetBusinessGroupDetailCmd = &cobra.Command{
 
 func init() {
 	GetBusinessGroupDetailCmd.Flags().IntVar(&getBusinessGroupDetailParams.Id, "id", 0, "id")
+	GetBusinessGroupDetailCmd.MarkFlagRequired("id")
 }
 
 // GetBusinessGroupDetailParams 请求参数

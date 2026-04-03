@@ -17,6 +17,7 @@ var GetEventDetailCmd = &cobra.Command{
 	Short: "获取事件详情",
 	Long:  `获取事件详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "NonWhiteProcessService.GetEventDetail", getEventDetailParams, &result)
@@ -30,6 +31,7 @@ var GetEventDetailCmd = &cobra.Command{
 
 func init() {
 	GetEventDetailCmd.Flags().IntVar(&getEventDetailParams.Id, "id", 0, "id")
+	GetEventDetailCmd.MarkFlagRequired("id")
 }
 
 // GetEventDetailParams 请求参数

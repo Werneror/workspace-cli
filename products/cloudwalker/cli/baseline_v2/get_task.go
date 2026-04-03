@@ -17,6 +17,7 @@ var GetTaskCmd = &cobra.Command{
 	Short: "获取核查任务详情",
 	Long:  `获取核查任务详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "BaselineV2Service.GetTask", getTaskParams, &result)
@@ -30,6 +31,7 @@ var GetTaskCmd = &cobra.Command{
 
 func init() {
 	GetTaskCmd.Flags().IntVar(&getTaskParams.Id, "id", 0, "ID")
+	GetTaskCmd.MarkFlagRequired("id")
 }
 
 // GetTaskParams 请求参数

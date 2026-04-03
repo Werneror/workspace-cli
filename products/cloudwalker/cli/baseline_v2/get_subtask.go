@@ -17,6 +17,7 @@ var GetSubtaskCmd = &cobra.Command{
 	Short: "获取核查子任务详情",
 	Long:  `获取核查子任务详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "BaselineV2Service.GetSubtask", getSubtaskParams, &result)
@@ -30,6 +31,7 @@ var GetSubtaskCmd = &cobra.Command{
 
 func init() {
 	GetSubtaskCmd.Flags().IntVar(&getSubtaskParams.Id, "id", 0, "ID")
+	GetSubtaskCmd.MarkFlagRequired("id")
 }
 
 // GetSubtaskParams 请求参数

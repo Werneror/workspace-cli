@@ -17,6 +17,7 @@ var GetRefreshDateTimeCmd = &cobra.Command{
 	Short: "获取资产的更新时间",
 	Long:  `获取资产的更新时间`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "AssetCrontabService.GetRefreshDateTime", getRefreshDateTimeParams, &result)
@@ -30,6 +31,7 @@ var GetRefreshDateTimeCmd = &cobra.Command{
 
 func init() {
 	GetRefreshDateTimeCmd.Flags().IntVar(&getRefreshDateTimeParams.HostId, "host-id", 0, "主机 ID")
+	GetRefreshDateTimeCmd.MarkFlagRequired("host-id")
 }
 
 // GetRefreshDateTimeParams 请求参数

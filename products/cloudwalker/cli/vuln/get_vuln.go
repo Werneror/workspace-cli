@@ -17,6 +17,7 @@ var GetVulnCmd = &cobra.Command{
 	Short: "获取漏洞事件详情",
 	Long:  `获取漏洞事件详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "VulnService.GetVuln", getVulnParams, &result)
@@ -30,6 +31,7 @@ var GetVulnCmd = &cobra.Command{
 
 func init() {
 	GetVulnCmd.Flags().IntVar(&getVulnParams.Id, "id", 0, "漏洞 ID")
+	GetVulnCmd.MarkFlagRequired("id")
 }
 
 // GetVulnParams 请求参数

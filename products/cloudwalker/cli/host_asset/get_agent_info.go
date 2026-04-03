@@ -17,6 +17,7 @@ var GetAgentInfoCmd = &cobra.Command{
 	Short: "获取探针信息",
 	Long:  `获取探针信息`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "HostAssetService.GetAgentInfo", getAgentInfoParams, &result)
@@ -30,6 +31,7 @@ var GetAgentInfoCmd = &cobra.Command{
 
 func init() {
 	GetAgentInfoCmd.Flags().IntVar(&getAgentInfoParams.Id, "id", 0, "ID")
+	GetAgentInfoCmd.MarkFlagRequired("id")
 }
 
 // GetAgentInfoParams 请求参数

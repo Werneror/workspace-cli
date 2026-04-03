@@ -17,6 +17,7 @@ var GetApplicationCmd = &cobra.Command{
 	Short: "获取软件详情信息",
 	Long:  `获取软件详情信息`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "ApplicationAssetService.GetApplication", getApplicationParams, &result)
@@ -30,6 +31,7 @@ var GetApplicationCmd = &cobra.Command{
 
 func init() {
 	GetApplicationCmd.Flags().IntVar(&getApplicationParams.Id, "id", 0, "应用 ID")
+	GetApplicationCmd.MarkFlagRequired("id")
 }
 
 // GetApplicationParams 请求参数

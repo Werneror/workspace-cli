@@ -17,6 +17,7 @@ var DeleteSoftwareIdentRuleCmd = &cobra.Command{
 	Short: "删除软件识别规则",
 	Long:  `删除软件识别规则`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "AssetConfigService.DeleteSoftwareIdentRule", deleteSoftwareIdentRuleParams, &result)
@@ -30,6 +31,7 @@ var DeleteSoftwareIdentRuleCmd = &cobra.Command{
 
 func init() {
 	DeleteSoftwareIdentRuleCmd.Flags().StringSliceVar(&deleteSoftwareIdentRuleParams.Id, "id", nil, "软件识别规则 ID")
+	DeleteSoftwareIdentRuleCmd.MarkFlagRequired("id")
 }
 
 // DeleteSoftwareIdentRuleParams 请求参数

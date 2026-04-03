@@ -17,6 +17,7 @@ var GetSensitiveFilePlanResultCmd = &cobra.Command{
 	Short: "获取文件完整性任务计划详情",
 	Long:  `获取文件完整性任务计划详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "CrontabService.GetSensitiveFilePlanResult", getSensitiveFilePlanResultParams, &result)
@@ -30,6 +31,7 @@ var GetSensitiveFilePlanResultCmd = &cobra.Command{
 
 func init() {
 	GetSensitiveFilePlanResultCmd.Flags().IntVar(&getSensitiveFilePlanResultParams.PlanId, "plan-id", 0, "计划 ID")
+	GetSensitiveFilePlanResultCmd.MarkFlagRequired("plan-id")
 }
 
 // GetSensitiveFilePlanResultParams 请求参数

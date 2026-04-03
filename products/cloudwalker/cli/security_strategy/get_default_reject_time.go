@@ -17,6 +17,7 @@ var GetDefaultRejectTimeCmd = &cobra.Command{
 	Short: "获取默认策略阻断时间",
 	Long:  `获取默认策略阻断时间`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "SecurityStrategyService.GetDefaultRejectTime", getDefaultRejectTimeParams, &result)
@@ -30,6 +31,7 @@ var GetDefaultRejectTimeCmd = &cobra.Command{
 
 func init() {
 	GetDefaultRejectTimeCmd.Flags().Float64Var(&getDefaultRejectTimeParams.AgentId, "agent-id", 0, "探针 id，若是批量处理，传 0")
+	GetDefaultRejectTimeCmd.MarkFlagRequired("agent-id")
 }
 
 // GetDefaultRejectTimeParams 请求参数
