@@ -54,7 +54,8 @@ tasks:
       TARGET_DIR: '{{.BUILD_DIR}}/{{.GOOS}}_{{.GOARCH}}'
       BIN_EXT: '{{if eq .GOOS "windows"}}.exe{{end}}'
       ARCHIVE_EXT: '{{if eq .GOOS "windows"}}zip{{else}}tar.gz{{end}}'
-      PACKAGE_NAME: '{{.BIN_NAME}}_{{.GOOS}}_{{.GOARCH}}'
+      DEFAULT_PACKAGE_NAME: '{{.BIN_NAME}}_{{.GOOS}}_{{.GOARCH}}'
+      PACKAGE_NAME: '{{default .DEFAULT_PACKAGE_NAME .PACKAGE_NAME}}'
     cmds:
       - task: build:target
         vars:
