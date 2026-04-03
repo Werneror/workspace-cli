@@ -17,6 +17,7 @@ var GetModuleDetailCmd = &cobra.Command{
 	Short: "获取探针模块详情",
 	Long:  `获取探针模块详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "AdminAgentService.GetModuleDetail", getModuleDetailParams, &result)
@@ -30,6 +31,7 @@ var GetModuleDetailCmd = &cobra.Command{
 
 func init() {
 	GetModuleDetailCmd.Flags().IntVar(&getModuleDetailParams.Id, "id", 0, "id")
+	GetModuleDetailCmd.MarkFlagRequired("id")
 }
 
 // GetModuleDetailParams 请求参数

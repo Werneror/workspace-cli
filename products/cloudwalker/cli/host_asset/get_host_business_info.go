@@ -17,6 +17,7 @@ var GetHostBusinessInfoCmd = &cobra.Command{
 	Short: "获取业务组信息",
 	Long:  `获取业务组信息`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "HostAssetService.GetHostBusinessInfo", getHostBusinessInfoParams, &result)
@@ -30,6 +31,7 @@ var GetHostBusinessInfoCmd = &cobra.Command{
 
 func init() {
 	GetHostBusinessInfoCmd.Flags().IntVar(&getHostBusinessInfoParams.Id, "id", 0, "ID")
+	GetHostBusinessInfoCmd.MarkFlagRequired("id")
 }
 
 // GetHostBusinessInfoParams 请求参数

@@ -17,6 +17,7 @@ var GetNetworkCmd = &cobra.Command{
 	Short: "获取Docker网络资产详情",
 	Long:  `获取Docker网络资产详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "DockerNetworkService.GetNetwork", getNetworkParams, &result)
@@ -30,6 +31,7 @@ var GetNetworkCmd = &cobra.Command{
 
 func init() {
 	GetNetworkCmd.Flags().IntVar(&getNetworkParams.Id, "id", 0, "id")
+	GetNetworkCmd.MarkFlagRequired("id")
 }
 
 // GetNetworkParams 请求参数

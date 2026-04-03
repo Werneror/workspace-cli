@@ -17,6 +17,7 @@ var DeletePackageCmd = &cobra.Command{
 	Short: "删除升级包",
 	Long:  `删除升级包`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "PackageService.DeletePackage", deletePackageParams, &result)
@@ -30,6 +31,7 @@ var DeletePackageCmd = &cobra.Command{
 
 func init() {
 	DeletePackageCmd.Flags().IntVar(&deletePackageParams.Id, "id", 0, "id")
+	DeletePackageCmd.MarkFlagRequired("id")
 }
 
 // DeletePackageParams 请求参数

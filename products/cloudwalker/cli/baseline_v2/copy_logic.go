@@ -17,6 +17,7 @@ var CopyLogicCmd = &cobra.Command{
 	Short: "复制核查逻辑",
 	Long:  `复制核查逻辑`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "BaselineV2Service.CopyLogic", copyLogicParams, &result)
@@ -30,6 +31,7 @@ var CopyLogicCmd = &cobra.Command{
 
 func init() {
 	CopyLogicCmd.Flags().StringSliceVar(&copyLogicParams.Id, "id", nil, "ID")
+	CopyLogicCmd.MarkFlagRequired("id")
 }
 
 // CopyLogicParams 请求参数

@@ -17,6 +17,7 @@ var GetHostEnvironCmd = &cobra.Command{
 	Short: "获取主机资产环境变量",
 	Long:  `获取主机资产环境变量`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "HostAssetService.GetHostEnviron", getHostEnvironParams, &result)
@@ -30,6 +31,7 @@ var GetHostEnvironCmd = &cobra.Command{
 
 func init() {
 	GetHostEnvironCmd.Flags().IntVar(&getHostEnvironParams.Id, "id", 0, "ID")
+	GetHostEnvironCmd.MarkFlagRequired("id")
 }
 
 // GetHostEnvironParams 请求参数

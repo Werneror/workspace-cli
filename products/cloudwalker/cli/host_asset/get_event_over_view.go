@@ -17,6 +17,7 @@ var GetEventOverViewCmd = &cobra.Command{
 	Short: "获取主机上的资产的统计信息",
 	Long:  `获取主机上的资产的统计信息`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "HostAssetService.GetEventOverView", getEventOverViewParams, &result)
@@ -30,6 +31,7 @@ var GetEventOverViewCmd = &cobra.Command{
 
 func init() {
 	GetEventOverViewCmd.Flags().IntVar(&getEventOverViewParams.Id, "id", 0, "ID")
+	GetEventOverViewCmd.MarkFlagRequired("id")
 }
 
 // GetEventOverViewParams 请求参数

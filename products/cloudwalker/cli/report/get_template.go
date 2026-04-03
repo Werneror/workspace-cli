@@ -17,6 +17,7 @@ var GetTemplateCmd = &cobra.Command{
 	Short: "获取模板",
 	Long:  `获取模板`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "ReportService.GetTemplate", getTemplateParams, &result)
@@ -30,6 +31,7 @@ var GetTemplateCmd = &cobra.Command{
 
 func init() {
 	GetTemplateCmd.Flags().IntVar(&getTemplateParams.Id, "id", 0, "id")
+	GetTemplateCmd.MarkFlagRequired("id")
 }
 
 // GetTemplateParams 请求参数

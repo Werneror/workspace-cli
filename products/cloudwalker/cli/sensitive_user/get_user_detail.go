@@ -17,6 +17,7 @@ var GetUserDetailCmd = &cobra.Command{
 	Short: "获取用户详情",
 	Long:  `获取用户详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "SensitiveUserService.GetUserDetail", getUserDetailParams, &result)
@@ -30,6 +31,7 @@ var GetUserDetailCmd = &cobra.Command{
 
 func init() {
 	GetUserDetailCmd.Flags().Float64Var(&getUserDetailParams.EventId, "event-id", 0, "事件ID")
+	GetUserDetailCmd.MarkFlagRequired("event-id")
 }
 
 // GetUserDetailParams 请求参数

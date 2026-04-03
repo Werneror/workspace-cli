@@ -17,6 +17,7 @@ var GetProcessCmd = &cobra.Command{
 	Short: "获取进程资产详情",
 	Long:  `获取进程资产详情`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "ProcessAssetService.GetProcess", getProcessParams, &result)
@@ -30,6 +31,7 @@ var GetProcessCmd = &cobra.Command{
 
 func init() {
 	GetProcessCmd.Flags().IntVar(&getProcessParams.Id, "id", 0, "ID")
+	GetProcessCmd.MarkFlagRequired("id")
 }
 
 // GetProcessParams 请求参数

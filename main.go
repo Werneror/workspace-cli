@@ -20,17 +20,14 @@ type app struct {
 	root             *cobra.Command
 	aliasSubcommands map[string]struct{}
 	config           config.Raw
+	configPath       string
+	configLoaded     bool
 	dryRun           bool
 }
 
 const defaultConfigPath = "config.yaml"
 
 func newApp() (*app, error) {
-	cfg, err := loadConfigFile(configPathFromCWD())
-	if err != nil {
-		return nil, err
-	}
-
 	root := &cobra.Command{
 		Use:           "cws",
 		Short:         "CLI for Chaitin Tech products",
@@ -41,9 +38,10 @@ func newApp() (*app, error) {
 	a := &app{
 		root:             root,
 		aliasSubcommands: make(map[string]struct{}),
-		config:           cfg,
+		configPath:       defaultConfigPathFromCWD(),
 	}
 
+	root.PersistentFlags().StringVarP(&a.configPath, "config", "c", a.configPath, "Config file path")
 	root.PersistentFlags().BoolVar(&a.dryRun, "dry-run", false, "Do not send requests for commands that support dry-run")
 
 	a.registerProductCommand(chaitin.NewCommand())
@@ -100,6 +98,10 @@ func (a *app) wrapProductCommand(cmd *cobra.Command) {
 	oldPreRunE := cmd.PersistentPreRunE
 
 	cmd.PersistentPreRunE = func(command *cobra.Command, args []string) error {
+		if err := a.ensureRuntimeConfigLoaded(); err != nil {
+			return err
+		}
+
 		switch cmd.Name() {
 		case "safeline-ce":
 			safelinece.ApplyRuntimeConfig(command, a.config)
@@ -124,6 +126,25 @@ func (a *app) wrapProductCommand(cmd *cobra.Command) {
 	}
 }
 
+func (a *app) ensureRuntimeConfigLoaded() error {
+	if a.configLoaded {
+		return nil
+	}
+
+	if err := config.LoadEnvFile(filepath.Join(".", ".env")); err != nil {
+		return err
+	}
+
+	cfg, err := loadConfigFile(a.configPath)
+	if err != nil {
+		return err
+	}
+
+	a.config = cfg
+	a.configLoaded = true
+	return nil
+}
+
 func normalizeBinaryName(path string) string {
 	base := filepath.Base(path)
 	base = strings.TrimSuffix(base, filepath.Ext(base))
@@ -138,7 +159,7 @@ func loadConfigFile(path string) (config.Raw, error) {
 	return config.Load(path)
 }
 
-func configPathFromCWD() string {
+func defaultConfigPathFromCWD() string {
 	return filepath.Join(".", defaultConfigPath)
 }
 

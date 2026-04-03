@@ -17,6 +17,7 @@ var DeleteLogCollectCmd = &cobra.Command{
 	Short: "删除日志采集规则",
 	Long:  `删除日志采集规则`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "LogCollectService.DeleteLogCollect", deleteLogCollectParams, &result)
@@ -30,6 +31,7 @@ var DeleteLogCollectCmd = &cobra.Command{
 
 func init() {
 	DeleteLogCollectCmd.Flags().StringSliceVar(&deleteLogCollectParams.Id, "id", nil, "ID")
+	DeleteLogCollectCmd.MarkFlagRequired("id")
 }
 
 // DeleteLogCollectParams 请求参数

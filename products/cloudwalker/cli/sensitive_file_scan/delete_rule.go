@@ -17,6 +17,7 @@ var DeleteRuleCmd = &cobra.Command{
 	Short: "删除文件完整性任务扫描规则",
 	Long:  `删除文件完整性任务扫描规则`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "SensitiveFileScanService.DeleteRule", deleteRuleParams, &result)
@@ -30,6 +31,7 @@ var DeleteRuleCmd = &cobra.Command{
 
 func init() {
 	DeleteRuleCmd.Flags().StringSliceVar(&deleteRuleParams.Id, "id", nil, "规则 ID")
+	DeleteRuleCmd.MarkFlagRequired("id")
 }
 
 // DeleteRuleParams 请求参数

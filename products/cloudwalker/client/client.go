@@ -177,6 +177,30 @@ func SetAPIKey(apiKey string) {
 	defaultClient.apiKey = apiKey
 }
 
+// GetHost 从 baseURL 中提取 host 部分
+func GetHost() string {
+	if defaultClient.baseURL == "" {
+		return ""
+	}
+	// 去掉协议前缀
+	url := defaultClient.baseURL
+	// 去掉 http:// 或 https://
+	if strings.HasPrefix(url, "https://") {
+		url = url[8:]
+	} else if strings.HasPrefix(url, "http://") {
+		url = url[7:]
+	}
+	// 去掉路径部分
+	if idx := strings.Index(url, "/"); idx != -1 {
+		url = url[:idx]
+	}
+	// 去掉端口部分（保留 host）
+	if idx := strings.Index(url, ":"); idx != -1 {
+		url = url[:idx]
+	}
+	return url
+}
+
 // dryRun 是否为演练模式（不发送实际请求）
 var dryRun bool = false
 

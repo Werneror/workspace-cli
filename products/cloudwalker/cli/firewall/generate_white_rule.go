@@ -17,6 +17,7 @@ var GenerateWhiteRuleCmd = &cobra.Command{
 	Short: "获取白名单配置",
 	Long:  `获取白名单配置`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "FirewallService.GenerateWhiteRule", generateWhiteRuleParams, &result)
@@ -30,6 +31,7 @@ var GenerateWhiteRuleCmd = &cobra.Command{
 
 func init() {
 	GenerateWhiteRuleCmd.Flags().IntVar(&generateWhiteRuleParams.Id, "id", 0, "事件 ID")
+	GenerateWhiteRuleCmd.MarkFlagRequired("id")
 }
 
 // GenerateWhiteRuleParams 请求参数
