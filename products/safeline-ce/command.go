@@ -16,6 +16,7 @@ var openAPIFS embed.FS
 // 运行时配置
 var (
 	runtimeCfg runtimeConfig
+	dryRun     bool
 )
 
 type runtimeConfig struct {
@@ -50,9 +51,7 @@ func NewCommand() *cobra.Command {
 
 文档: https://github.com/chaitin/safeline-ce`,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-			// 加载配置文件
-			loadConfigFromFile(cmd)
-			// 应用运行时配置
+			// 应用运行时配置到命令 flags
 			applyRuntimeConfig(cmd)
 		},
 	}
@@ -73,12 +72,13 @@ func NewCommand() *cobra.Command {
 }
 
 // ApplyRuntimeConfig 应用运行时配置（供 main.go 调用）
-func ApplyRuntimeConfig(cmd *cobra.Command, cfg config.Raw) {
+func ApplyRuntimeConfig(cmd *cobra.Command, cfg config.Raw, isDryRun bool) {
 	productCfg, err := config.DecodeProduct[runtimeConfig](cfg, "safeline-ce")
 	if err != nil {
 		return
 	}
 	runtimeCfg = productCfg
+	dryRun = isDryRun
 }
 
 // applyRuntimeConfig 应用运行时配置到命令 flags
@@ -90,17 +90,6 @@ func applyRuntimeConfig(cmd *cobra.Command) {
 	if flag := cmd.Flags().Lookup("api-key"); flag != nil && !flag.Changed && runtimeCfg.APIKey != "" {
 		_ = cmd.Flags().Set("api-key", runtimeCfg.APIKey)
 	}
-}
-
-// loadConfigFromFile 从配置文件加载配置
-func loadConfigFromFile(cmd *cobra.Command) {
-	cfg, err := LoadConfig(DefaultConfigPath())
-	if err != nil {
-		return
-	}
-
-	runtimeCfg.URL = cfg.URL
-	runtimeCfg.APIKey = cfg.APIKey
 }
 
 // loadDynamicCommands 从嵌入的 OpenAPI 定义加载动态命令

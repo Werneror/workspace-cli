@@ -104,7 +104,7 @@ func (a *app) wrapProductCommand(cmd *cobra.Command) {
 
 		switch cmd.Name() {
 		case "safeline-ce":
-			safelinece.ApplyRuntimeConfig(command, a.config)
+			safelinece.ApplyRuntimeConfig(command, a.config, a.dryRun)
 		case "cloudwalker":
 			cloudwalker.ApplyRuntimeConfig(command, a.config)
 		case "tanswer":
