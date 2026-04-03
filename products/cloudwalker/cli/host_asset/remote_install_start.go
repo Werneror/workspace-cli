@@ -32,6 +32,9 @@ var RemoteInstallStartCmd = &cobra.Command{
 				return
 			}
 		}
+		if remoteInstallStartParams.RemoteHost == "" {
+			remoteInstallStartParams.RemoteHost = client.GetHost()
+		}
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "HostAssetService.RemoteInstallStart", remoteInstallStartParams, &result)

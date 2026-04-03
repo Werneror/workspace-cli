@@ -32,6 +32,7 @@ var GetEventByLoginIpListCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "AbnormalLoginEventService.GetEventByLoginIPList", getEventByLoginIpListParams, &result)

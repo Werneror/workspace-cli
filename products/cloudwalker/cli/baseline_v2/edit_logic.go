@@ -32,6 +32,7 @@ var EditLogicCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "BaselineV2Service.EditLogic", editLogicParams, &result)

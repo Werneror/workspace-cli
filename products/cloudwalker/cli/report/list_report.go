@@ -25,6 +25,7 @@ var ListReportCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "ReportService.ListReport", listReportParams, &result)

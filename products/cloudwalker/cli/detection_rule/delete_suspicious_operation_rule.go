@@ -25,6 +25,7 @@ var DeleteSuspiciousOperationRuleCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "DetectionRuleService.DeleteSuspiciousOperationRule", deleteSuspiciousOperationRuleParams, &result)

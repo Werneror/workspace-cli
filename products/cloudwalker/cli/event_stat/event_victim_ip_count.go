@@ -25,6 +25,7 @@ var EventVictimIpCountCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "EventStatService.EventVictimIPCount", eventVictimIpCountParams, &result)

@@ -25,6 +25,7 @@ var EnablementRuleCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "SensitiveFileScanService.EnablementRule", enablementRuleParams, &result)

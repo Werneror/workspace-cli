@@ -39,6 +39,7 @@ var GetVulnListCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "VulnService.GetVulnList", getVulnListParams, &result)

@@ -25,6 +25,7 @@ var StatApplicationByCategoryCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "ApplicationAssetService.StatApplicationByCategory", statApplicationByCategoryParams, &result)

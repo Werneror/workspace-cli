@@ -32,6 +32,7 @@ var GetEventListByNameCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "NonWhiteProcessService.GetEventListByName", getEventListByNameParams, &result)

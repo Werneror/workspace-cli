@@ -32,6 +32,9 @@ var GenerateInstallInstallerCmd = &cobra.Command{
 				return
 			}
 		}
+		if generateInstallInstallerParams.RemoteHost == "" {
+			generateInstallInstallerParams.RemoteHost = client.GetHost()
+		}
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "HostAssetService.GenerateInstallInstaller", generateInstallInstallerParams, &result)

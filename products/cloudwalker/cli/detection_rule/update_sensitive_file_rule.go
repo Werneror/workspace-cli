@@ -25,6 +25,7 @@ var UpdateSensitiveFileRuleCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "DetectionRuleService.UpdateSensitiveFileRule", updateSensitiveFileRuleParams, &result)

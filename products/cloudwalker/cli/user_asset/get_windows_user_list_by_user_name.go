@@ -39,6 +39,7 @@ var GetWindowsUserListByUserNameCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "UserAssetService.GetWindowsUserListByUserName", getWindowsUserListByUserNameParams, &result)

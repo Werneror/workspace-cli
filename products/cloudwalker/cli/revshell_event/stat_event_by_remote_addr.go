@@ -25,6 +25,7 @@ var StatEventByRemoteAddrCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "RevshellEventService.StatEventByRemoteAddr", statEventByRemoteAddrParams, &result)

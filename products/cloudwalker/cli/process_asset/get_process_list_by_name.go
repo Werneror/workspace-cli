@@ -39,6 +39,7 @@ var GetProcessListByNameCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "ProcessAssetService.GetProcessListByName", getProcessListByNameParams, &result)

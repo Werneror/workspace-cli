@@ -32,6 +32,7 @@ var GetConnectionRecordCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "FirewallService.GetConnectionRecord", getConnectionRecordParams, &result)

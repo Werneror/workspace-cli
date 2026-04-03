@@ -39,6 +39,7 @@ var ListByHostCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "WeakPasswdService.ListByHost", listByHostParams, &result)

@@ -32,6 +32,7 @@ var GetListCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "EventStatService.GetList", getListParams, &result)

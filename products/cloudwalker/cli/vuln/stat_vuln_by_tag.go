@@ -25,6 +25,7 @@ var StatVulnByTagCmd = &cobra.Command{
 				return
 			}
 		}
+
 		cli := client.GetClient()
 		var result map[string]interface{}
 		err := cli.Call(context.Background(), "VulnService.StatVulnByTag", statVulnByTagParams, &result)
