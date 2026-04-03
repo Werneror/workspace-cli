@@ -126,7 +126,7 @@ func loadDynamicCommands(cmd *cobra.Command) error {
 	}
 
 	// 创建解析器并生成命令
-	parser := NewParser(nil)
+	parser := NewParser()
 	commands, err := parser.GenerateCommands(&api)
 	if err != nil {
 		return fmt.Errorf("failed to generate commands: %w", err)
@@ -208,26 +208,6 @@ func registerOverrides(cmd *cobra.Command) {
 		RunE:  runStatOverview,
 	}
 	statCmd.AddCommand(overviewCmd)
-}
-
-// runCertUpload 执行证书上传
-func runCertUpload(cmd *cobra.Command, args []string) error {
-	client := getClient(cmd)
-	certFile, _ := cmd.Flags().GetString("cert-file")
-	keyFile, _ := cmd.Flags().GetString("key-file")
-
-	files := map[string]string{
-		"cert": certFile,
-		"key":  keyFile,
-	}
-
-	var result interface{}
-	if err := client.UploadFile(cmd.Context(), "/api/open/certs", files, &result); err != nil {
-		return err
-	}
-
-	renderer := getRenderer(cmd)
-	return renderer.Render(result)
 }
 
 // runStatOverview 执行 stat overview 聚合查询

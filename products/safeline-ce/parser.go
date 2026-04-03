@@ -10,13 +10,11 @@ import (
 )
 
 // Parser OpenAPI 解析器
-type Parser struct {
-	cli *CLIExtensions
-}
+type Parser struct{}
 
 // NewParser 创建解析器
-func NewParser(cli *CLIExtensions) *Parser {
-	return &Parser{cli: cli}
+func NewParser() *Parser {
+	return &Parser{}
 }
 
 // GenerateCommands 生成 Cobra 命令
