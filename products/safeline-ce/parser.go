@@ -19,6 +19,11 @@ func NewParser() *Parser {
 
 // GenerateCommands 生成 Cobra 命令
 func (p *Parser) GenerateCommands(api *OpenAPI) ([]*cobra.Command, error) {
+	// 使用 API 中的扩展配置
+	if api.XCLI != nil {
+		p.cli = api.XCLI
+	}
+
 	tagCommands := make(map[string]*cobra.Command)
 
 	for path, pathItem := range api.Paths {
@@ -47,16 +52,17 @@ func (p *Parser) GenerateCommands(api *OpenAPI) ([]*cobra.Command, error) {
 
 			// 确保父命令存在
 			if _, exists := tagCommands[parentTag]; !exists {
+				short := p.getTagDescription(parentTag)
 				tagCommands[parentTag] = &cobra.Command{
 					Use:   parentTag,
-					Short: fmt.Sprintf("%s commands", parentTag),
+					Short: short,
 				}
 			}
 
 			// 如果是嵌套命令，确保子命令存在
 			targetCmd := tagCommands[parentTag]
 			if childTag != "" {
-				targetCmd = getOrCreateChildCommand(tagCommands[parentTag], childTag)
+				targetCmd = p.getOrCreateChildCommand(tagCommands[parentTag], childTag)
 			}
 
 			cmd := p.createOperationCommand(op.method, path, op.operation, api.BasePath)
@@ -81,8 +87,39 @@ func parseNestedTag(tag string) (parent, child string) {
 	return parts[0], ""
 }
 
+// getTagDescription 获取 tag 描述
+func (p *Parser) getTagDescription(tag string) string {
+	if p.cli != nil && p.cli.Tags != nil {
+		if desc, ok := p.cli.Tags[tag]; ok {
+			return desc
+		}
+	}
+	return fmt.Sprintf("%s commands", tag)
+}
+
+// getChildDescription 获取子命令描述
+func (p *Parser) getChildDescription(parent, child string) string {
+	key := parent + "/" + child
+	if p.cli != nil && p.cli.Children != nil {
+		if desc, ok := p.cli.Children[key]; ok {
+			return desc
+		}
+	}
+	return fmt.Sprintf("%s %s commands", parent, child)
+}
+
+// getParamDescription 获取参数描述
+func (p *Parser) getParamDescription(name string) string {
+	if p.cli != nil && p.cli.Params != nil {
+		if desc, ok := p.cli.Params[name]; ok {
+			return desc
+		}
+	}
+	return ""
+}
+
 // getOrCreateChildCommand 获取或创建子命令
-func getOrCreateChildCommand(parent *cobra.Command, childName string) *cobra.Command {
+func (p *Parser) getOrCreateChildCommand(parent *cobra.Command, childName string) *cobra.Command {
 	for _, cmd := range parent.Commands() {
 		if cmd.Use == childName {
 			return cmd
@@ -91,7 +128,7 @@ func getOrCreateChildCommand(parent *cobra.Command, childName string) *cobra.Com
 
 	child := &cobra.Command{
 		Use:   childName,
-		Short: fmt.Sprintf("%s %s commands", parent.Use, childName),
+		Short: p.getChildDescription(parent.Use, childName),
 	}
 	parent.AddCommand(child)
 	return child
@@ -100,9 +137,15 @@ func getOrCreateChildCommand(parent *cobra.Command, childName string) *cobra.Com
 func (p *Parser) createOperationCommand(method, path string, op *Operation, basePath string) *cobra.Command {
 	opName := operationName(method, path)
 
+	// 优先使用 x-cli-summary，其次使用默认 summary
+	short := op.XCLISummary
+	if short == "" {
+		short = op.Summary
+	}
+
 	cmd := &cobra.Command{
 		Use:   opName,
-		Short: op.Summary,
+		Short: short,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return p.executeCommand(cmd, method, path, basePath, op.Parameters)
 		},
@@ -110,7 +153,7 @@ func (p *Parser) createOperationCommand(method, path string, op *Operation, base
 
 	// 添加参数 flags
 	for _, param := range op.Parameters {
-		addFlag(cmd, param)
+		p.addFlag(cmd, param)
 	}
 
 	// 为 list 命令添加分页参数
@@ -126,7 +169,7 @@ func (p *Parser) createOperationCommand(method, path string, op *Operation, base
 	return cmd
 }
 
-func (p *Parser) executeCommand(cmd *cobra.Command, method, path, basePath string, params []Parameter) error {
+func (p *Parser) executeCommand(cmd *cobra.Command, method, path string, basePath string, params []Parameter) error {
 	ctx := context.Background()
 
 	// 构建 URL
@@ -268,14 +311,23 @@ func operationName(method, path string) string {
 	return strings.ToLower(method)
 }
 
-func addFlag(cmd *cobra.Command, param Parameter) {
+func (p *Parser) addFlag(cmd *cobra.Command, param Parameter) {
+	// 优先级：x-cli-description > x-cli.params > 默认 description
+	desc := param.XCLIDescription
+	if desc == "" {
+		desc = p.getParamDescription(param.Name)
+	}
+	if desc == "" {
+		desc = param.Description
+	}
+
 	switch param.Type {
 	case "integer":
-		cmd.Flags().Int(param.Name, 0, param.Description)
+		cmd.Flags().Int(param.Name, 0, desc)
 	case "boolean":
-		cmd.Flags().Bool(param.Name, false, param.Description)
+		cmd.Flags().Bool(param.Name, false, desc)
 	default:
-		cmd.Flags().String(param.Name, "", param.Description)
+		cmd.Flags().String(param.Name, "", desc)
 	}
 
 	if param.Required {
