@@ -13,3 +13,7 @@ xray:
 safeline-ce:
   endpoint: ""
   token: ""
+
+safeline:
+  url: ""
+  api_key: ""
